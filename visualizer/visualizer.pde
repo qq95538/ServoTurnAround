@@ -27,7 +27,7 @@ void draw()
   background(255); // set background to white
   lights();
 
-  translate(width/2, height/2); // set position to centre
+  translate(width/4, height/2); // set position to centre
 
   pushMatrix(); // begin object
 
@@ -42,10 +42,23 @@ void draw()
                c2*s3, c1*s2*s3-c3*s1, c1*c3+s1*s2*s3, 0,
                0, 0, 0, 1);
 
-  drawArduino();
+  drawGlasses();
+  
 
   popMatrix(); // end of object
 
+
+
+  translate(width/2, 0); // set position to centre
+  pushMatrix(); // begin object
+  applyMatrix( c2*c3, s1*s3+c1*c3*s2, c3*s1*s2-c1*s3, 0,
+               -s2, c1*c2, c2*s1, 0,
+               c2*s3, c1*s2*s3-c3*s1, c1*c3+s1*s2*s3, 0,
+               0, 0, 0, 1);
+  drawArduino();
+
+  popMatrix(); // end of object
+  
   // Print values to console
   print(roll);
   print("\t");
@@ -87,4 +100,36 @@ void drawArduino()
 
   translate(-20, 0, -180); // set position to other edge of Arduino box
   box(210, 20, 10); // draw other pin header as box
+}
+
+void drawGlasses()
+{
+  /* function contains shape(s) that are rotated with the IMU */
+  stroke(0);
+  fill(90);
+  box(302, 142, 50); // draw Arduino board base shape
+  stroke(20);
+  fill(200);
+  translate(0, 0, 50);
+  box(300, 140, 60);
+  stroke(0);
+  fill(90);
+  translate(0, 0, 40);
+  box(302, 142, 20);
+  translate(150, 0, 120);
+  box(10, 80, 250);
+  translate(-300, 0, 0);
+  box(10, 80, 250); 
+  translate(150, -70, 0);
+  box(80, 10, 250);
+/*
+  stroke(0); // set outline colour to black
+  fill(80); // set fill colour to dark grey
+
+  translate(60, -10, 90); // set position to edge of Arduino box
+  box(170, 20, 10); // draw pin header as box
+
+  translate(-20, 0, -180); // set position to other edge of Arduino box
+  box(210, 20, 10); // draw other pin header as box
+ */
 }
