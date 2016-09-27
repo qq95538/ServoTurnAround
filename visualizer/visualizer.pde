@@ -7,7 +7,7 @@ float roll = 0.0;
 
 void setup()
 {
-  size(1200, 500, P3D);
+  size(1440, 900, P3D);
 
   // if you have only ONE serial port active
   myPort = new Serial(this, Serial.list()[0], 9600); // if you have only ONE serial port active
@@ -27,10 +27,9 @@ void draw()
   background(255); // set background to white
   lights();
 
-  translate(width/4, height/2); // set position to centre
+  translate(width*0.3, height*0.65); // set position to centre
 
   pushMatrix(); // begin object
-
   float c1 = cos(radians(roll));
   float s1 = sin(radians(roll));
   float c2 = cos(radians(pitch));
@@ -41,21 +40,15 @@ void draw()
                -s2, c1*c2, c2*s1, 0,
                c2*s3, c1*s2*s3-c3*s1, c1*c3+s1*s2*s3, 0,
                0, 0, 0, 1);
-
   drawGlasses();
-  
-
   popMatrix(); // end of object
-
-
-
-  translate(width/2, 0); // set position to centre
+  translate(width*0.4, 0); // set position to centre
   pushMatrix(); // begin object
   applyMatrix( c2*c3, s1*s3+c1*c3*s2, c3*s1*s2-c1*s3, 0,
                -s2, c1*c2, c2*s1, 0,
                c2*s3, c1*s2*s3-c3*s1, c1*c3+s1*s2*s3, 0,
                0, 0, 0, 1);
-  drawArduino();
+  drawCamera();
 
   popMatrix(); // end of object
   
@@ -85,51 +78,40 @@ void serialEvent()
   } while (message != null);
 }
 
-void drawArduino()
+void drawCamera()
 {
   /* function contains shape(s) that are rotated with the IMU */
+  translate(0, 0, -100);
   stroke(0, 90, 90); // set outline colour to darker teal
   fill(0, 130, 130); // set fill colour to lighter teal
-  box(300, 10, 200); // draw Arduino board base shape
+  box(200, 200, 10); // draw camera PCB base board
 
   stroke(0); // set outline colour to black
   fill(80); // set fill colour to dark grey
+  translate(0, 0, -30); // draw camera lens
+  box(50, 50, 50);
 
-  translate(60, -10, 90); // set position to edge of Arduino box
-  box(170, 20, 10); // draw pin header as box
-
-  translate(-20, 0, -180); // set position to other edge of Arduino box
-  box(210, 20, 10); // draw other pin header as box
 }
 
 void drawGlasses()
 {
   /* function contains shape(s) that are rotated with the IMU */
+  translate(0, 0, -250);//draw black front panel
   stroke(0);
   fill(90);
-  box(302, 142, 50); // draw Arduino board base shape
+  box(302, 142, 50);
   stroke(20);
   fill(200);
-  translate(0, 0, 50);
+  translate(0, 0, 50);//draw white plastic volumn
   box(300, 140, 60);
   stroke(0);
   fill(90);
-  translate(0, 0, 40);
+  translate(0, 0, 40);//draw black spur
   box(302, 142, 20);
-  translate(150, 0, 120);
+  translate(150, 0, 120);//draw left belt
   box(10, 80, 250);
-  translate(-300, 0, 0);
+  translate(-300, 0, 0);//draw right belt
   box(10, 80, 250); 
-  translate(150, -70, 0);
+  translate(150, -70, 0);//draw head belt
   box(80, 10, 250);
-/*
-  stroke(0); // set outline colour to black
-  fill(80); // set fill colour to dark grey
-
-  translate(60, -10, 90); // set position to edge of Arduino box
-  box(170, 20, 10); // draw pin header as box
-
-  translate(-20, 0, -180); // set position to other edge of Arduino box
-  box(210, 20, 10); // draw other pin header as box
- */
 }
