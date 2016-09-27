@@ -7,7 +7,7 @@ float roll = 0.0;
 
 void setup()
 {
-  size(600, 500, P3D);
+  size(1200, 500, P3D);
 
   // if you have only ONE serial port active
   myPort = new Serial(this, Serial.list()[0], 9600); // if you have only ONE serial port active
