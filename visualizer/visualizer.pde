@@ -5,7 +5,7 @@ float yaw = 0.0;
 float pitch = 0.0;
 float roll = 0.0;
 
-int pos, pos1, pos2, pos3;
+int pos, pos1;
 boolean need_serial = false;
 
 void setup()
@@ -60,11 +60,12 @@ void draw()
   
   // Print values to console
   print(roll);
-  print("\t");
+  print(" \t");
   print(pitch);
-  print("\t");
+  print(" \t");
   print(yaw);
   println();
+  if(need_serial) send_data();
   
 }
 
@@ -80,10 +81,8 @@ void serialEvent()
         yaw = float(list[1]); // convert to float yaw
         pitch = float(list[2]); // convert to float pitch
         roll = float(list[3]); // convert to float roll
+        need_serial = true;
       }
-      pos = mouseX%180;
-      pos1 = mouseY%180;
-      send_data();
     }
   } while (message != null);
 }
@@ -127,21 +126,17 @@ void drawGlasses()
 }
  void send_data()
  {
+   pos = int(roll)%180;
+   pos1 = int(yaw)%180;
+  
    print("pos=");
-   print(int(pos));
+   print(pos);
    print(',');
    print("pos1=");
-   print(int(pos1));
-   print(',');
-   print("pos2=");
-   print(int(pos2));
-   print(',');
-   print("pos3=");
-   println(pos3);
+   println(pos1);
+   print(';');
    ServoPort.write('%');
-   ServoPort.write(int(pos));
-   ServoPort.write(int(pos1));
-   ServoPort.write(int(pos2));
-   ServoPort.write(int(pos3));
+   ServoPort.write(pos);
+   ServoPort.write(pos1);
    need_serial = false;
  }

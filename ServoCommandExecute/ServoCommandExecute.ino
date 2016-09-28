@@ -15,30 +15,25 @@
 
  Servo myservo;
  Servo myservo1;
- Servo myservo2;
- Servo myservo3;
+
 
  int servo =A6;//define servo control pin number on a megaPI board
  int servo1=A7;
- int servo2=A8;
- int servo3=A9;
+
 
  int pos;
  int pos1;
- int pos2;
- int pos3;
+
+ boolean a = false;
 
  void setup() 
  {
+   pinMode(13, OUTPUT);
    Serial.begin(9600);
    myservo.attach(servo);
    myservo1.attach(servo1);
-   myservo2.attach(servo2);
-   myservo3.attach(servo3);
    pos=90;
    pos1=90;
-   pos2=90;
-   pos3=90;
    updateServo();
  }
  void loop() 
@@ -48,15 +43,15 @@
  } 
  void recv_data()
  {
-   while(Serial.available()>=8)
+   while(Serial.available()>=2)
    {
      char data=Serial.read();
      if(data=='%')
      {
        pos=Serial.read();
        pos1=Serial.read();
-       pos2=Serial.read();
-       pos3=Serial.read();
+       a = !a;
+       digitalWrite(13, a);   // turn the LED on (HIGH is the voltage level)
      }
    }
  }
@@ -65,7 +60,5 @@
  {
    myservo.write(pos);
    myservo1.write(pos1);
-   myservo2.write(pos2);
-   myservo3.write(pos3);
    delay(8);
  }
