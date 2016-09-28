@@ -1,17 +1,20 @@
 import processing.serial.*;
-Serial myPort;
+Serial IMUSensorPort, ServoPort;
 
 float yaw = 0.0;
 float pitch = 0.0;
 float roll = 0.0;
+
+int pos, pos1, pos2, pos3;
+boolean need_serial = false;
 
 void setup()
 {
   size(1440, 900, P3D);
 
   // if you have only ONE serial port active
-  myPort = new Serial(this, Serial.list()[0], 9600); // if you have only ONE serial port active
-
+  IMUSensorPort = new Serial(this, Serial.list()[0], 9600); // if you have only ONE serial port active
+  ServoPort = new Serial(this, Serial.list()[1], 9600); // if you have only ONE serial port active
   // if you know the serial port name
   //myPort = new Serial(this, "COM5:", 9600);                    // Windows
   //myPort = new Serial(this, "/dev/ttyACM0", 9600);             // Linux
@@ -20,7 +23,10 @@ void setup()
   textSize(16); // set text size
   textMode(SHAPE); // set text mode to shape
 }
-
+void mouseMoved()
+{
+  
+}
 void draw()
 {
   serialEvent();  // read and parse incoming serial message
@@ -59,6 +65,7 @@ void draw()
   print("\t");
   print(yaw);
   println();
+  
 }
 
 void serialEvent()
@@ -66,7 +73,7 @@ void serialEvent()
   int newLine = 13; // new line character in ASCII
   String message;
   do {
-    message = myPort.readStringUntil(newLine); // read from port until new line
+    message = IMUSensorPort.readStringUntil(newLine); // read from port until new line
     if (message != null) {
       String[] list = split(trim(message), " ");
       if (list.length >= 4 && list[0].equals("Orientation:")) {
@@ -74,6 +81,9 @@ void serialEvent()
         pitch = float(list[2]); // convert to float pitch
         roll = float(list[3]); // convert to float roll
       }
+      pos = mouseX%180;
+      pos1 = mouseY%180;
+      send_data();
     }
   } while (message != null);
 }
@@ -115,3 +125,23 @@ void drawGlasses()
   translate(150, -70, 0);//draw head belt
   box(80, 10, 250);
 }
+ void send_data()
+ {
+   print("pos=");
+   print(int(pos));
+   print(',');
+   print("pos1=");
+   print(int(pos1));
+   print(',');
+   print("pos2=");
+   print(int(pos2));
+   print(',');
+   print("pos3=");
+   println(pos3);
+   ServoPort.write('%');
+   ServoPort.write(int(pos));
+   ServoPort.write(int(pos1));
+   ServoPort.write(int(pos2));
+   ServoPort.write(int(pos3));
+   need_serial = false;
+ }
