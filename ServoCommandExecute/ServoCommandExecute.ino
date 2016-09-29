@@ -32,18 +32,13 @@
    Serial.begin(9600);
    myservo.attach(servo);
    myservo1.attach(servo1);
-   pos=90;
-   pos1=90;
-   updateServo();
+   myservo.write(90);
+   myservo1.write(90);
+   delay(8);
  }
  void loop() 
  {
-   recv_data();
-   updateServo();
- } 
- void recv_data()
- {
-   while(Serial.available()>=2)
+   while(Serial.available()>2)
    {
      char data=Serial.read();
      if(data=='%')
@@ -54,11 +49,8 @@
        digitalWrite(13, a);   // turn the LED on (HIGH is the voltage level)
      }
    }
- }
-
- void updateServo()
- {
    myservo.write(pos);
    myservo1.write(pos1);
    delay(8);
+   Serial.write("#");
  }

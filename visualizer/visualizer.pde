@@ -29,7 +29,7 @@ void mouseMoved()
 }
 void draw()
 {
-  serialEvent();  // read and parse incoming serial message
+  readIMU();  // read and parse IMU sensor incoming serial message
   background(255); // set background to white
   lights();
 
@@ -65,11 +65,13 @@ void draw()
   print(" \t");
   print(yaw);
   println();
+  
+  readServoRequest();
   if(need_serial) send_data();
   
 }
 
-void serialEvent()
+void readIMU()
 {
   int newLine = 13; // new line character in ASCII
   String message;
@@ -81,10 +83,14 @@ void serialEvent()
         yaw = float(list[1]); // convert to float yaw
         pitch = float(list[2]); // convert to float pitch
         roll = float(list[3]); // convert to float roll
-        need_serial = true;
+
       }
     }
-  } while (message != null);
+  } while (message != null);  
+}
+
+void readServoRequest(){
+         need_serial = true;  
 }
 
 void drawCamera()
