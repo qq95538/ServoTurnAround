@@ -74,8 +74,8 @@ void readIMU()
     if (message != null) {
       String[] list = split(trim(message), " ");
       if (list.length >= 4 && list[0].equals("Orientation:")) {
-        yaw = float(list[1]); // convert to float yaw
-        pitch = float(list[2]); // convert to float pitch
+        yaw = -float(list[1]); // convert to float yaw
+        pitch = -float(list[2]); // convert to float pitch
         roll = float(list[3]); // convert to float roll
 
       }
@@ -89,8 +89,8 @@ void readServoRequest(){
     int inByte = ServoPort.read();
     //if(inByte=='#')
     //{
-      pos = int(yaw)%180;
-      pos1 = int(roll)%180+90;
+      pos = -int(yaw)%180;
+      pos1 = -int(roll)%180+90;
       print("yaw=");
       print(pos);
       print(',');

@@ -83,13 +83,19 @@ void loop() {
      CurieIMU.readMotionSensor(aix, aiy, aiz, gix, giy, giz);
 
      // convert from raw data to gravity and degrees/second units
-     ax = convertRawAcceleration(aix);
-     ay = convertRawAcceleration(aiy);
-     az = convertRawAcceleration(aiz);
-     gx = convertRawGyro(gix);
-     gy = convertRawGyro(giy);
-     gz = convertRawGyro(giz);
-
+     //ax = convertRawAcceleration(aix);
+     ax = convertRawAcceleration(aiz);
+     //ay = convertRawAcceleration(aiy);
+     ay = convertRawAcceleration(aix);
+     //az = convertRawAcceleration(aiz);
+     az = convertRawAcceleration(aiy);
+     //gx = convertRawGyro(gix);
+     gx = convertRawGyro(giz);
+     //gy = convertRawGyro(giy);
+     gy = convertRawGyro(gix);
+     //gz = convertRawGyro(giz);
+     gz = convertRawGyro(giy);  
+       
      // update the filter, which computes orientation
      filter.updateIMU(gx, gy, gz, ax, ay, az);
 
