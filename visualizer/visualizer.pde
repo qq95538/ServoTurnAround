@@ -5,9 +5,6 @@ float yaw = 0.0;
 float pitch = 0.0;
 float roll = 0.0;
 
-int pos, pos1;
-boolean need_serial = false;
-
 void setup()
 {
   size(1440, 900, P3D);
@@ -60,15 +57,12 @@ void draw()
   
   // Print values to console
   print(roll);
-  print(" \t");
+  print("\t\t");
   print(pitch);
-  print(" \t");
+  print("\t\t");
   print(yaw);
   println();
-  
-  readServoRequest();
-  if(need_serial) send_data();
-  
+  readServoRequest();  
 }
 
 void readIMU()
@@ -90,7 +84,24 @@ void readIMU()
 }
 
 void readServoRequest(){
-         need_serial = true;  
+  int pos, pos1;
+  while (ServoPort.available() > 0) {
+    int inByte = ServoPort.read();
+    //if(inByte=='#')
+    //{
+      pos = int(yaw)%180;
+      pos1 = int(roll)%180+90;
+      print("yaw=");
+      print(pos);
+      print(',');
+      print("roll=");
+      println(pos1);
+      print(';');
+      ServoPort.write('%');
+      ServoPort.write(pos);
+      ServoPort.write(pos1);
+    //}
+  }
 }
 
 void drawCamera()
@@ -130,19 +141,3 @@ void drawGlasses()
   translate(150, -70, 0);//draw head belt
   box(80, 10, 250);
 }
- void send_data()
- {
-   pos = int(roll)%180;
-   pos1 = int(yaw)%180;
-  
-   print("pos=");
-   print(pos);
-   print(',');
-   print("pos1=");
-   println(pos1);
-   print(';');
-   ServoPort.write('%');
-   ServoPort.write(pos);
-   ServoPort.write(pos1);
-   need_serial = false;
- }

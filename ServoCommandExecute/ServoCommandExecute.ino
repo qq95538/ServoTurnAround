@@ -52,5 +52,5 @@
    myservo.write(pos);
    myservo1.write(pos1);
    delay(8);
-   Serial.write("#");
+   Serial.print("#");
  }
