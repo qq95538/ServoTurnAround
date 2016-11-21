@@ -28,17 +28,17 @@ void draw() {
   stroke(0, 255, 0);
   strokeWeight(3);
   Rectangle[] faces = opencv.detect();
-  println(faces.length);
-
+  //println(faces.length);
 
   if(faces.length > 0){
     for (int i = 0; i < faces.length; i++) {
-      println(faces[i].x + "," + faces[i].y);
+      //println(faces[i].x + "," + faces[i].y);
       rect(faces[i].x, faces[i].y, faces[i].width, faces[i].height);
     }
     
-    if(abs(faces[0].x - lastx) > 5 || abs(faces[0].y - lasty) > 5){
+    if(faces[0].x != lastx || faces[0].y != lasty){
         lastx = faces[0].x; lasty = faces[0].y;
+        println(lastx, lasty);
         replyServoRequest(faces[0].x, faces[0].y);
     }
   }
@@ -66,6 +66,7 @@ void replyServoRequest(int yaw, int roll) //send yaw and roll angel to MegaPi to
       ServoPort.write('%');
       ServoPort.write(pos);
       ServoPort.write(pos1);
+      break;
     }
   }
 }
