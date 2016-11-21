@@ -3,6 +3,8 @@
  *modified by qq95538 
  *
  *my email address is 190808149@qq.com
+ *
+ *The program serve for Visulizer.pde and FindFace.pde.
  */
 
 /**
