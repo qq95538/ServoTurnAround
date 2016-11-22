@@ -47,3 +47,4 @@ Temporary Items
 .apdisk
 *.xml
 FindFace/data/haarcascade_frontalface_alt.xml
+OpticalFlow/data/sample1.mov

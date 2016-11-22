@@ -29,7 +29,7 @@ void draw() {
   strokeWeight(3);
   Rectangle[] faces = opencv.detect();
   //println(faces.length);
-
+  
   if(faces.length > 0){
     for (int i = 0; i < faces.length; i++) {
       //println(faces[i].x + "," + faces[i].y);
@@ -41,6 +41,9 @@ void draw() {
         println(lastx, lasty);
         replyServoRequest(faces[0].x, faces[0].y);
     }
+  }
+  else{
+    replyServoRequest(0, 90);
   }
 }
 
