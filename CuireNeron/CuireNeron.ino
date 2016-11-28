@@ -4,41 +4,57 @@
  *
  *my email address is 190808149@qq.com
  *
- *The program serve for Visulizer.pde and FindFace.pde.
  */
 
-/**
- *processing control a 4-DOF mechanical arm
- *by jorneryChen 
- *
- *my emial address is 1274104408@qq.com
- */
- int flowX;
- int flowY;
+ #include <CurieNeurons.h>
+ CurieNeurons hNN;
 
+ int catL = 0;
+ int prevcat = 0;
+ int dis, cat, nid, nsr, ncount;
+ 
+ const short sampleNbr = 20;
+ const short signalNbr = 2;
+ byte vector[sampleNbr*signalNbr];
+ byte flowX[sampleNbr];
+ byte flowY[sampleNbr];
  boolean a = false;
-
- void setup() 
+ void setup()   
  {
    pinMode(13, OUTPUT);
-   Serial.begin(9600);
-   delay(8);
+   Serial.begin(115200);
+   while (!Serial);
+   if(hNN.begin()==0){
+      Serial.print("neurons initialized");
+      hNN.forget(500);
+   }
+   else{
+      Serial.print("error.");
+   }
  }
  void loop() 
  {
-   while(Serial.available()>2)
-   {
-     char data=Serial.read();
-     if(data=='%')
-     {
-       flowX=Serial.read();
-       flowY=Serial.read();
+   while(Serial.available()==0);
+   char data=Serial.read();
+   if(data=='%')
+   {    
+       for(int i = 0; i < sampleNbr; i++)
+       {
+          while(Serial.available()==0);
+          vector[i*signalNbr]=Serial.read();
+       }
+       for(int i = 0; i < sampleNbr; i++)
+       {
+          while(Serial.available()==0);
+          vector[i*signalNbr+1]=Serial.read();
+       }
        a = !a;
        digitalWrite(13, a);   // turn the LED on (HIGH is the voltage level)
-     }
+       for(int i = 0; i <sampleNbr; i++){
+          Serial.write(vector[i*signalNbr]); 
+          Serial.write(vector[i*signalNbr+1]);
+       }
+       Serial.print("#");     
    }
-   //myservo.write(pos);
-   //myservo1.write(pos1);
-   delay(8);
-   Serial.print("#");
  }
+
