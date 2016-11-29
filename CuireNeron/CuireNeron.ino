@@ -11,7 +11,7 @@
 
  int catL = 0;
  int prevcat = 0;
- int dis, cat, nid, nsr, ncount;
+ int dist, cat, nid, nsr, ncount;
  
  const short sampleNbr = 20;
  const short signalNbr = 2;
@@ -36,25 +36,53 @@
  {
    while(Serial.available()==0);
    char data=Serial.read();
-   if(data=='%')
-   {    
-       for(int i = 0; i < sampleNbr; i++)
-       {
-          while(Serial.available()==0);
-          vector[i*signalNbr]=Serial.read();
-       }
-       for(int i = 0; i < sampleNbr; i++)
-       {
-          while(Serial.available()==0);
-          vector[i*signalNbr+1]=Serial.read();
-       }
-       a = !a;
-       digitalWrite(13, a);   // turn the LED on (HIGH is the voltage level)
-       for(int i = 0; i <sampleNbr; i++){
-          Serial.write(vector[i*signalNbr]); 
-          Serial.write(vector[i*signalNbr+1]);
-       }
-       Serial.print("#");     
+   for(int i = 0; i < sampleNbr; i++)
+   {
+       while(Serial.available()==0);
+       vector[i*signalNbr]=Serial.read();
    }
+   for(int i = 0; i < sampleNbr; i++)
+   {
+       while(Serial.available()==0);
+       vector[i*signalNbr+1]=Serial.read();
+   }
+   a = !a;
+   digitalWrite(13, a);   // turn the LED on (HIGH is the voltage level)
+   switch(data)
+   {    
+       case '%':
+           //learn 1
+           catL = 1;          
+           /*for(int i = 0; i <sampleNbr; i++){
+              Serial.write(vector[i*signalNbr]); 
+              Serial.write(vector[i*signalNbr+1]);
+           }*/
+           ncount = hNN.learn(vector, sampleNbr*signalNbr, catL);
+           Serial.write(ncount);
+           Serial.write("#");
+           Serial.flush();
+           break;
+       case '^':
+           //learn 1
+           catL = 2;          
+           /*for(int i = 0; i <sampleNbr; i++){
+              Serial.write(vector[i*signalNbr]); 
+              Serial.write(vector[i*signalNbr+1]);
+           }*/
+           ncount = hNN.learn(vector, sampleNbr*signalNbr, catL);
+           Serial.write(ncount);
+           Serial.write("#");
+           Serial.flush();
+           break;
+       case '$':
+           // Recognize
+           hNN.classify(vector, sampleNbr*signalNbr,&dist, &cat, &nid);
+           Serial.write(cat);
+           Serial.write("#");
+           Serial.flush();
+           break;
+                      
+   }
+   
  }
 
