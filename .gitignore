@@ -48,3 +48,4 @@ Temporary Items
 *.xml
 FindFace/data/haarcascade_frontalface_alt.xml
 OpticalFlow/data/sample1.mov
+visualizer/code/sketch.properties

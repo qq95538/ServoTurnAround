@@ -53,6 +53,10 @@ void setup() {
 
    // start the IMU and filter
    CurieIMU.begin();
+   CurieIMU.autoCalibrateGyroOffset();
+   CurieIMU.autoCalibrateAccelerometerOffset(X_AXIS, 0);
+   CurieIMU.autoCalibrateAccelerometerOffset(Y_AXIS, 1);
+   CurieIMU.autoCalibrateAccelerometerOffset(Z_AXIS, 0);
    CurieIMU.setGyroRate(25);
    CurieIMU.setAccelerometerRate(25);
    filter.begin(25);
