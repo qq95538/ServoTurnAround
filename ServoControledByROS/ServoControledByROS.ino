@@ -13,15 +13,15 @@
 
 
 ros::NodeHandle  nh;
-Servo myservo;  // create servo object to control a servo
-sensor_msgs::JointState pos;
+Servo joint1, joint2;  // create servo object to control a servo
 
 void messageCb(const sensor_msgs::JointState& msg){
-  int angle;
-  pos = msg;
-  angle = constrain(pos.position[0]/3.1416*360, 0, 180);
+  int angle1, angle2;
+  angle1 = constrain(msg.position[0]/3.141592654/2*360, 0, 180);
+  angle2 = constrain(msg.position[1]/3.141592654/2*360, 0, 180);
   digitalWrite(13, HIGH-digitalRead(13));   // blink the led
-  myservo.write(angle);
+  joint1.write(angle1);
+  joint2.write(angle2);
 
 }
 
@@ -33,7 +33,10 @@ void setup()
   nh.initNode();
   nh.subscribe(sub);
 
-  myservo.attach(A6);  // attaches the servo on pin 9 to the servo object
+  joint1.attach(A6);  // attaches the servo on pin to the servo object
+  joint2.attach(A7);
+  joint1.write(0);
+  joint2.write(0);
 }
 
 void loop()
